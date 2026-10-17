@@ -1,0 +1,35 @@
+{
+  "name": "pokeidle-hub",
+  "productName": "PokeIdle Hub",
+  "version": "1.2.0",
+  "description": "Até 4 contas do PokeIdle numa janela só, cada uma com o seu login separado.",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "teste": "electron . --teste",
+    "build": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "io.pokeidle.hub.pessoal",
+    "productName": "PokeIdle Hub",
+    "files": [
+      "src/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "PokeIdleHub.exe"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "electronVersion": "33.2.1"
+  },
+  "devDependencies": {
+    "electron": "33.2.1",
+    "electron-builder": "25.1.8"
+  }
+}

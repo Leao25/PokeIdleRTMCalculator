@@ -11,26 +11,44 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: bancada de feira — ficha à esquerda (fixa no desktop), laudo de preço e gráfico à direita, ranking embaixo */
+/* Três temas com nome de cidade, os mesmos do PokeIdle Hub: Celadon City (verde-jade claro), Lavender Town
+   (lavanda escuro) e Mahogany Town (mogno com verde-azulado). Sem escolha salva, segue o sistema:
+   claro → Celadon, escuro → Lavender. */
 :root {
-  --bg: #f5f3f8; --surface: #ffffff; --sunk: #ece8f2; --ink: #1d1726; --muted: #675e75; --line: #ddd6e7;
-  --gem: #b8146f; --gem-soft: #fbe3f0; --coin: #9a6200; --coin-soft: #fbefd6;
-  --good: #23824a; --warn: #b4561b; --bad: #b42335;
+  --bg: #d8f5d1; --surface: #f3fcf0; --sunk: #c9ecdc; --ink: #2b2735; --muted: #565164; --line: #a9c8ab;
+  --gem: #565164; --gem-soft: #e6e3ee; --coin: #8a5a00; --coin-soft: #f3ead0;
+  --good: #1d7a49; --warn: #9a5d00; --bad: #b42335; color-scheme: light;
   --acc: var(--gem); --acc-soft: var(--gem-soft);
   --f-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
   --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
-  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) {
   --bg: #141019; --surface: #1d1826; --sunk: #17121f; --ink: #eee9f5; --muted: #a59cb4; --line: #342c42;
   --gem: #f36cb8; --gem-soft: #3a1830; --coin: #f2b53a; --coin-soft: #3a2c10;
   --good: #5cc77d; --warn: #f08a4b; --bad: #ff6b7d; color-scheme: dark;
 } }
-:root[data-theme="dark"] {
+:root[data-theme="lavender"] {
   --bg: #141019; --surface: #1d1826; --sunk: #17121f; --ink: #eee9f5; --muted: #a59cb4; --line: #342c42;
   --gem: #f36cb8; --gem-soft: #3a1830; --coin: #f2b53a; --coin-soft: #3a2c10;
   --good: #5cc77d; --warn: #f08a4b; --bad: #ff6b7d; color-scheme: dark;
 }
+:root[data-theme="mahogany"] {
+  --bg: #30261c; --surface: #403831; --sunk: #2a2118; --ink: #f2ebe2; --muted: #c2b4a5; --line: #5a4d41;
+  --gem: #3fc1c4; --gem-soft: #1f5f61; --coin: #f2b53a; --coin-soft: #4a3a1a;
+  --good: #6fe0a8; --warn: #f0bd5a; --bad: #ff7f86; color-scheme: dark;
+}
+:root[data-theme="celadon"] {
+  --bg: #d8f5d1; --surface: #f3fcf0; --sunk: #c9ecdc; --ink: #2b2735; --muted: #565164; --line: #a9c8ab;
+  --gem: #565164; --gem-soft: #e6e3ee; --coin: #8a5a00; --coin-soft: #f3ead0;
+  --good: #1d7a49; --warn: #9a5d00; --bad: #b42335; color-scheme: light;
+}
+.temas-site { display: inline-flex; gap: 6px; align-items: center; padding: 3px 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--sunk); }
+.temas-site button { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); padding: 0; cursor: pointer; }
+.temas-site button[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--sunk), 0 0 0 4px var(--acc); }
+.temas-site [data-t="celadon"] { background: linear-gradient(135deg, #d8f5d1 50%, #726c81 50%); }
+.temas-site [data-t="lavender"] { background: linear-gradient(135deg, #1d1826 50%, #f36cb8 50%); }
+.temas-site [data-t="mahogany"] { background: linear-gradient(135deg, #403831 50%, #0b8185 50%); }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-body); }
@@ -321,7 +339,12 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
         <button id="m-coins" aria-pressed="false"><span class="dot coin"></span>Coins</button>
       </div>
       <a class="tema" id="btn-extensao" href="#extensao">🎯 Extensão Sniper</a>
-      <button class="tema" id="tema" type="button" aria-label="Alternar entre modo claro e escuro"></button>
+      <a class="tema" id="btn-hub" href="#hub">🖥️ PokeIdle Hub</a>
+      <div class="temas-site" role="group" aria-label="Tema do site">
+        <button type="button" data-t="celadon" title="Tema Celadon City (claro)" aria-label="Tema Celadon City"></button>
+        <button type="button" data-t="lavender" title="Tema Lavender Town (escuro)" aria-label="Tema Lavender Town"></button>
+        <button type="button" data-t="mahogany" title="Tema Mahogany Town (escuro)" aria-label="Tema Mahogany Town"></button>
+      </div>
       <div class="rate" id="rate-box">1 Gema ≈ <b id="rate">3.000.000</b> Coins</div>
     </div>
   </header>
@@ -522,6 +545,43 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
                 <li>Escolha o desconto mínimo e o intervalo no painel. Para desligar, use <b>Pausar</b> no painel ou desative o script no Tampermonkey.</li>
               </ol>
               <p class="small muted">Atualizações chegam sozinhas pelo Tampermonkey. Se você joga com duas contas em navegadores diferentes, instale só no navegador da conta que vai comprar.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="vista" data-vista="hub" hidden>
+        <section class="panel">
+          <div class="plugin plugin-pagina" id="pokeidle-hub">
+            <div class="head-row"><div><span class="plugin-tag">Programa para Windows · grátis</span><h2 style="margin-top:6px">🖥️ PokeIdle Hub</h2></div>
+              <a class="btn" id="hub-baixar" href="https://github.com/Leao25/PokeIdleRMTCalculator/releases/latest/download/PokeIdleHub.exe" rel="noopener">⬇ Baixar o PokeIdle Hub</a></div>
+            <div class="plugin-corpo">
+              <p class="small">Suas contas do PokeIdle <b>numa janela só</b>, lado a lado numa grade 2×2 ou uma em tela cheia. Cada quadrado é um navegador separado, com o seu próprio login: dá para jogar várias contas sem abrir vários navegadores nem abas anônimas. <span id="hub-versao" class="muted"></span></p>
+              <div class="plugin-col">
+                <div><span class="lbl">O que ele faz</span>
+                  <ul class="small">
+                    <li>Até <b>4 contas</b>: aperte o <b>+</b> num quadrado, faça o login uma vez e o quadrado lembra.</li>
+                    <li>Barra com as contas, a situação de cada uma (conectada, pausada, sem login) e há quanto tempo está ligada; clique numa conta para vê-la em tela cheia (Esc volta).</li>
+                    <li>Em cada quadrado: <b>mutar</b>, <b>recarregar</b>, <b>tela cheia</b> e fechar (mantendo ou apagando o login).</li>
+                    <li>As contas <b>não "dormem"</b> quando estão fora de foco ou minimizadas, como acontece nas abas escondidas do navegador.</li>
+                    <li>O <b>🎯 Sniper ao vivo</b> já vem dentro: escolha a conta e o painel aparece na barra do hub, sem Tampermonkey.</li>
+                    <li>Três temas: Lavender Town, Mahogany Town e Celadon City (os mesmos deste site).</li>
+                  </ul></div>
+                <div><span class="lbl">Antes de decidir</span>
+                  <ul class="small">
+                    <li>Não lê nem guarda senha ou token: só mostra o <b>nick</b> e se a conta está logada. Só abre o pokeidle.io; links para fora (Discord, Twitch) abrem no seu navegador.</li>
+                    <li><b>Não joga por você</b> e não clica em nada no jogo: só junta as janelas. Respeite o limite de contas e os Termos do PokeIdle.</li>
+                    <li>Ao entrar com uma conta no hub, o jogo fecha essa mesma conta no navegador onde ela estava ("conta aberta em outro lugar").</li>
+                    <li>É um programa de terceiros, sem ligação com o PokeIdle, e o <a href="https://github.com/Leao25/PokeIdleRMTCalculator/tree/main/hub" target="_blank" rel="noopener">código é aberto</a>.</li>
+                  </ul></div>
+              </div>
+              <span class="lbl">Como instalar</span>
+              <ol class="small">
+                <li>Clique em <b>Baixar o PokeIdle Hub</b> (≈ 75 MB). Não precisa instalar: o arquivo já é o programa; guarde onde quiser e crie um atalho.</li>
+                <li>Na primeira vez, o Windows pode mostrar "O Windows protegeu o computador" (o programa não tem assinatura paga). Clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>.</li>
+                <li>Aperte o <b>+</b>, faça o login e repita nas outras contas. Para o Sniper, clique em <b>🎯 Sniper</b> na barra e escolha a conta.</li>
+              </ol>
+              <p class="small muted">Quando sair uma versão nova, o próprio hub avisa na barra. O Sniper dentro dele se atualiza sozinho.</p>
             </div>
           </div>
         </section>
@@ -1112,15 +1172,16 @@ const tendHTML = (t, lim = 0.03, titulo = "mediana da última semana contra a an
 function abrirAba(aba) {
   if (aba === "itens") aba = "mercado"; // a lista de itens mora na aba Mercado
   if (aba === "sniper" || aba === "sniperitens") aba = "extensao"; // os snipers viraram a extensão
-  if (!["avaliar", "comprar", "investir", "trocar", "time", "extensao", "farmar", "mercado"].includes(aba)) aba = "avaliar";
+  if (!["avaliar", "comprar", "investir", "trocar", "time", "extensao", "hub", "farmar", "mercado"].includes(aba)) aba = "avaliar";
   state.aba = aba;
   document.querySelectorAll("[data-aba]").forEach((b) => b.setAttribute("aria-selected", b.dataset.aba === aba));
   document.querySelectorAll("[data-vista]").forEach((v) => { v.hidden = v.dataset.vista !== aba; });
   // itens usam sempre a média de 7 dias do jogo: o seletor de período (vendas de pokémon) some lá
   $("seg-periodo").hidden = aba === "sniperitens";
   // a ficha só serve onde se avalia um pokémon
-  document.querySelector(".grid").classList.toggle("sem-ficha", ["extensao", "mercado", "time"].includes(aba));
+  document.querySelector(".grid").classList.toggle("sem-ficha", ["extensao", "hub", "mercado", "time"].includes(aba));
   if (aba === "extensao") $("btn-extensao").setAttribute("aria-current", "page"); else $("btn-extensao").removeAttribute("aria-current");
+  if (aba === "hub") $("btn-hub").setAttribute("aria-current", "page"); else $("btn-hub").removeAttribute("aria-current");
   if (location.hash.slice(1) !== aba) history.replaceState(null, "", aba === "avaliar" ? location.pathname : "#" + aba);
   if (aba === "farmar") renderFarm();
   if (aba === "mercado") { renderCotacao(); renderItens(); }
@@ -2098,25 +2159,26 @@ new MutationObserver((muts) => {
   }
 }).observe(document.body, { childList: true, subtree: true });
 
-// ---------- tema claro / escuro ----------
-// Sem escolha salva, segue o sistema (prefers-color-scheme); o botão grava a escolha da pessoa.
-const temaEscuroSistema = () => matchMedia("(prefers-color-scheme: dark)").matches;
+// a versão atual do PokeIdle Hub (a mesma que o programa consulta para avisar de versão nova)
+fetch("hub.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).then((h) => { if (h?.versao) $("hub-versao").textContent = `Versão ${h.versao}.`; }).catch(() => {});
+
+// ---------- temas: Celadon City, Lavender Town, Mahogany Town (os mesmos do PokeIdle Hub) ----------
+// Sem escolha salva, segue o sistema: claro → Celadon, escuro → Lavender. Quem tinha "light"/"dark" salvo
+// (o botão antigo de dia e noite) cai no equivalente.
+const TEMAS = ["celadon", "lavender", "mahogany"];
+const temaDoSistema = () => (matchMedia("(prefers-color-scheme: dark)").matches ? "lavender" : "celadon");
 function aplicarTema(t) {
-  if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+  if (TEMAS.includes(t)) document.documentElement.dataset.theme = t;
   else delete document.documentElement.dataset.theme;
-  const escuro = t ? t === "dark" : temaEscuroSistema();
-  $("tema").innerHTML = escuro ? "☀️ Modo claro" : "🌙 Modo escuro";
-  $("tema").setAttribute("aria-pressed", escuro);
+  const atual = TEMAS.includes(t) ? t : temaDoSistema();
+  document.querySelectorAll(".temas-site [data-t]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.t === atual)));
 }
 let temaSalvo = null;
 try { temaSalvo = localStorage.getItem("rtm-tema"); } catch (e) {}
+if (temaSalvo === "light") temaSalvo = "celadon";
+if (temaSalvo === "dark") temaSalvo = "lavender";
 aplicarTema(temaSalvo);
-$("tema").onclick = () => {
-  const escuroAgora = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : temaEscuroSistema();
-  const novo = escuroAgora ? "light" : "dark";
-  try { localStorage.setItem("rtm-tema", novo); } catch (e) {}
-  aplicarTema(novo);
-};
+document.querySelectorAll(".temas-site [data-t]").forEach((b) => { b.onclick = () => { try { localStorage.setItem("rtm-tema", b.dataset.t); } catch (e) {} aplicarTema(b.dataset.t); }; });
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { if (!document.documentElement.dataset.theme) aplicarTema(null); });
 
 // ---------- complete meu time ----------
