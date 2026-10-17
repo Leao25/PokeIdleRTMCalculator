@@ -1,8 +1,8 @@
 {
-  "name": "pokeidle-hub",
-  "productName": "PokeIdle Hub",
-  "version": "1.2.0",
-  "description": "Até 4 contas do PokeIdle numa janela só, cada uma com o seu login separado.",
+  "name": "idledeck",
+  "productName": "IdleDeck",
+  "version": "1.2.1",
+  "description": "IdleDeck (by Leão): até 4 contas de jogos idle de navegador numa janela só.",
   "main": "src/main.js",
   "private": true,
   "scripts": {
@@ -12,16 +12,16 @@
   },
   "build": {
     "appId": "io.pokeidle.hub.pessoal",
-    "productName": "PokeIdle Hub",
+    "productName": "IdleDeck",
     "files": [
       "src/**/*"
     ],
     "win": {
       "target": "portable",
-      "signAndEditExecutable": false
+      "icon": "src/icone.png"
     },
     "portable": {
-      "artifactName": "PokeIdleHub.exe"
+      "artifactName": "IdleDeck.exe"
     },
     "directories": {
       "output": "dist"

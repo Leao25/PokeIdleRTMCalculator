@@ -4,7 +4,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('hub', {
   inicio: () => ipcRenderer.invoke('hub:inicio'),
   layout: (rects) => ipcRenderer.send('hub:layout', rects),
-  adicionar: (i) => ipcRenderer.send('hub:adicionar', i),
+  adicionar: (i, jogo) => ipcRenderer.send('hub:adicionar', i, jogo),
   remover: (i, sairDaConta) => ipcRenderer.invoke('hub:remover', i, !!sairDaConta),
   mudo: (i) => ipcRenderer.send('hub:mudo', i),
   recarregar: (i) => ipcRenderer.send('hub:recarregar', i),

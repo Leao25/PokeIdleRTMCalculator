@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IdleDeck · propostas de logo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root { color-scheme: dark; --bg: #0f0c13; --ink: #ece6f5; --muted: #9b8fb0; --line: #2c2438; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 "IBM Plex Sans", system-ui, sans-serif; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 48px; display: grid; gap: 28px; }
+h1 { font: 700 24px/1.2 "Chakra Petch", sans-serif; margin: 0; }
+.intro { color: var(--muted); margin: 4px 0 0; max-width: 70ch; }
+.proposta { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.proposta > header { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; border-bottom: 1px solid var(--line); }
+.proposta > header b { font: 700 17px "Chakra Petch", sans-serif; }
+.proposta > header span { color: var(--muted); }
+.temas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) { .temas { grid-template-columns: minmax(0, 1fr); } }
+.tema { padding: 22px 18px; display: grid; gap: 18px; justify-items: start; background: var(--t-bg); color: var(--t-ink); }
+.tema + .tema { border-left: 1px solid var(--line); }
+.tema .nome-tema { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--t-muted); }
+.grande { width: 128px; height: 128px; }
+.marca { display: flex; align-items: center; gap: 12px; }
+.marca svg { width: 48px; height: 48px; flex: none; }
+.marca .txt { display: grid; line-height: 1.05; }
+.marca .txt b { font: 500 28px "Chakra Petch", sans-serif; letter-spacing: .01em; }
+.marca .txt b strong { font-weight: 700; color: var(--a); }
+.marca .txt small { font-size: 12px; color: var(--t-muted); letter-spacing: .04em; margin-top: 3px; }
+.pequenos { display: flex; align-items: center; gap: 14px; color: var(--t-muted); font-size: 11.5px; }
+.pequenos svg { flex: none; }
+.aba { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 8px 8px 0 0; background: var(--t-surface); color: var(--t-ink); font-size: 12px; }
+
+/* paletas dos 3 temas */
+.lavender { --t-bg: #141019; --t-surface: #1d1826; --t-ink: #eee9f5; --t-muted: #a59cb4; --a: #f36cb8; --b: #b77cff; --c: #2a2138; --d: #3a2e4d; --i: #eee9f5; }
+.mahogany { --t-bg: #30261c; --t-surface: #403831; --t-ink: #f2ebe2; --t-muted: #c2b4a5; --a: #3fc1c4; --b: #0b8185; --c: #36544f; --d: #1f5f61; --i: #f2ebe2; }
+.celadon { --t-bg: #d8f5d1; --t-surface: #f3fcf0; --t-ink: #2b2735; --t-muted: #565164; --a: #565164; --b: #726c81; --c: #9ddbca; --d: #92b395; --i: #2b2735; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div>
+    <h1>IdleDeck · 3 propostas de logo</h1>
+    <p class="intro">Cada proposta aparece nos 3 temas (Lavender Town, Mahogany Town, Celadon City), em tamanho grande, com o nome ao lado e nos tamanhos pequenos de ícone (32 px como no programa e 16 px como na aba do navegador). As cores mudam sozinhas com o tema.</p>
+  </div>
+
+  <!-- símbolos (SVG); as cores vêm do tema: --a destaque, --b secundária, --c e --d superfícies, --i tinta -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <!-- 1. Deck: três cartas em leque; a da frente tem o "play" do jogo rodando sozinho e o tique do relógio -->
+      <symbol id="logo-deck" viewBox="0 0 64 64">
+        <rect x="14" y="10" width="28" height="40" rx="6" transform="rotate(-16 28 50)" fill="var(--d)"/>
+        <rect x="22" y="10" width="28" height="40" rx="6" transform="rotate(14 36 50)" fill="var(--b)"/>
+        <rect x="18" y="12" width="28" height="40" rx="6" fill="var(--a)"/>
+        <path d="M28 25.5v13l10.5-6.5z" fill="var(--t-bg)"/>
+        <circle cx="32" cy="46.5" r="1.6" fill="var(--t-bg)"/><circle cx="26.5" cy="46.5" r="1.1" fill="var(--t-bg)" opacity=".6"/><circle cx="37.5" cy="46.5" r="1.1" fill="var(--t-bg)" opacity=".6"/>
+      </symbol>
+      <!-- 2. Painel: a grade 2×2 de contas do hub; uma janela acesa com a mira do Sniper -->
+      <symbol id="logo-painel" viewBox="0 0 64 64">
+        <rect x="4" y="4" width="56" height="56" rx="14" fill="var(--c)"/>
+        <rect x="11" y="11" width="19" height="19" rx="5" fill="var(--a)"/>
+        <rect x="34" y="11" width="19" height="19" rx="5" fill="var(--d)"/>
+        <rect x="11" y="34" width="19" height="19" rx="5" fill="var(--d)"/>
+        <rect x="34" y="34" width="19" height="19" rx="5" fill="var(--b)"/>
+        <circle cx="20.5" cy="20.5" r="5" fill="none" stroke="var(--t-bg)" stroke-width="2"/>
+        <path d="M20.5 13.5v3.5M20.5 24v3.5M13.5 20.5H17M24 20.5h3.5" stroke="var(--t-bg)" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+      <!-- 3. Monograma: um "D" feito de camadas de carta (o deck) com o ponto do "i" girando como um relógio idle -->
+      <symbol id="logo-monograma" viewBox="0 0 64 64">
+        <path d="M14 10h16a22 22 0 0 1 0 44H14z" fill="var(--a)"/>
+        <path d="M22 18h8a14 14 0 0 1 0 28h-8z" fill="var(--t-bg)"/>
+        <path d="M22 26h7a6 6 0 0 1 0 12h-7z" fill="var(--b)"/>
+        <circle cx="52" cy="13" r="6" fill="none" stroke="var(--b)" stroke-width="2.4"/>
+        <path d="M52 9.5V13l2.6 1.6" fill="none" stroke="var(--a)" stroke-width="2" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div id="propostas"></div>
+</div>
+<script>
+const P = [
+  { id: 'logo-deck', nome: '1 · Deck', txt: 'Três cartas em leque: os vários jogos e contas num baralho só. A da frente tem o "play" (o jogo rodando sozinho) e os pontinhos do tempo passando.' },
+  { id: 'logo-painel', nome: '2 · Painel', txt: 'A grade 2×2 do hub, uma conta em cada quadrado, com a mira do Sniper acesa numa delas. É a cara do programa.' },
+  { id: 'logo-monograma', nome: '3 · Monograma', txt: 'Um "D" de Deck feito de camadas, com um pequeno relógio no lugar do pingo do "i": idle + deck num símbolo só.' },
+];
+const TEMAS = [['lavender', 'Lavender Town'], ['mahogany', 'Mahogany Town'], ['celadon', 'Celadon City']];
+const usa = (id, w) => `<svg width="${w}" height="${w}" viewBox="0 0 64 64" role="img" aria-label="logo"><use href="#${id}"/></svg>`;
+document.getElementById('propostas').innerHTML = P.map((p) => `<section class="proposta">
+  <header><b>${p.nome}</b><span>${p.txt}</span></header>
+  <div class="temas">${TEMAS.map(([t, nome]) => `<div class="tema ${t}">
+    <span class="nome-tema">${nome}</span>
+    <svg class="grande" viewBox="0 0 64 64" role="img" aria-label="logo ${p.nome}"><use href="#${p.id}"/></svg>
+    <div class="marca">${usa(p.id, 48)}<div class="txt"><b>Idle<strong>Deck</strong></b><small>PokeIdle</small></div></div>
+    <div class="pequenos">${usa(p.id, 32)} 32 px <span class="aba">${usa(p.id, 16)} IdleDeck · PokeIdle</span></div>
+  </div>`).join('')}</div>
+</section>`).join('');
+</script>
+</body>
+</html>

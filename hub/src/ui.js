@@ -4,11 +4,12 @@
 (() => {
   const N = 4;
   const $ = (id) => document.getElementById(id);
-  const estado = Array.from({ length: N }, (_, i) => ({ i, ativo: false, nome: '', mudo: false, nick: null, logado: false, pausada: false, carregando: false, desde: null }));
+  const estado = Array.from({ length: N }, (_, i) => ({ i, ativo: false, nome: '', mudo: false, nick: null, logado: false, pausada: false, carregando: false, desde: null, jogo: 'pokeidle', jogoNome: 'PokeIdle', temSniper: true }));
+  let jogos = [{ id: 'pokeidle', nome: 'PokeIdle', site: 'pokeidle.io', sniper: true }];
   let foco = null;        // índice da conta em tela cheia, ou null (grade)
   let modalAberto = false;
   let sniper = { conta: null, versao: null, pronto: false }, painelSniper = '';
-  const NOMES_TEMA = { lavender: 'Lavender Town', mahogany: 'Mahogany Town', celadon: 'Celadon City' };
+  const NOMES_TEMA = { ametista: 'Ametista', turquesa: 'Turquesa', jade: 'Jade' };
 
   const ICONES = {
     som: '<svg viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>',
@@ -39,14 +40,14 @@
   function montar() {
     $('contas').innerHTML = estado.map((s) => `<button class="conta" data-conta="${s.i}"><span class="num">${s.i + 1}</span><span class="nome"></span><span class="sub"></span></button>`).join('');
     $('grade').innerHTML = estado.map((s) => `<section class="tile" data-tile="${s.i}">
-      <header><span class="bolinha"></span><span class="t"></span><span class="alvo-tag" hidden>🎯 Sniper</span><span class="s"></span>
+      <header><span class="bolinha"></span><span class="t"></span><span class="jogo-tag" hidden></span><span class="alvo-tag" hidden>🎯 Sniper</span><span class="s"></span>
         <span class="acoes">
           <button data-acao="mudo"></button>
           <button data-acao="recarregar" title="Recarregar o jogo">${ICONES.recarregar}</button>
           <button data-acao="cheia"></button>
           <button data-acao="fechar" title="Fechar este quadrado">${ICONES.fechar}</button>
         </span></header>
-      <div class="corpo"><button class="mais" data-acao="adicionar" title="Abrir o PokeIdle neste quadrado">+</button><div class="mais-txt">Adicionar conta</div></div>
+      <div class="corpo"><button class="mais" data-acao="adicionar" title="Escolher o jogo deste quadrado">+</button><div class="mais-txt">Adicionar jogo</div></div>
     </section>`).join('');
     estado.forEach(pintar);
   }
@@ -62,6 +63,8 @@
     t.style.setProperty('--cor', sit.cor || 'var(--mudo)');
     t.querySelector('.t').textContent = s.ativo ? nomeDe(s) : `Conta ${s.i + 1}`;
     t.querySelector('.alvo-tag').hidden = sniper.conta !== s.i;
+    // o nome do jogo só aparece aqui, no topo do quadrado
+    const jt = t.querySelector('.jogo-tag'); jt.textContent = s.jogoNome || ''; jt.hidden = !s.ativo;
     t.querySelector('.s').textContent = s.ativo ? sit.txt : '';
     t.querySelector('.mais').hidden = s.ativo; t.querySelector('.mais-txt').hidden = s.ativo;
     const bm = t.querySelector('[data-acao="mudo"]');
@@ -99,7 +102,7 @@
   $('contas').addEventListener('click', (ev) => {
     const c = ev.target.closest('[data-conta]'); if (!c || ev.target.tagName === 'INPUT') return;
     const i = Number(c.dataset.conta);
-    if (!estado[i].ativo) { window.hub.adicionar(i); focar(i); return; }
+    if (!estado[i].ativo) { escolherJogo(i, true); return; }
     focar(foco === i ? null : i);
   });
   $('contas').addEventListener('dblclick', (ev) => {
@@ -116,7 +119,7 @@
   $('grade').addEventListener('click', (ev) => {
     const b = ev.target.closest('[data-acao]'), t = ev.target.closest('[data-tile]'); if (!b || !t) return;
     const i = Number(t.dataset.tile);
-    if (b.dataset.acao === 'adicionar') window.hub.adicionar(i);
+    if (b.dataset.acao === 'adicionar') escolherJogo(i, false);
     if (b.dataset.acao === 'mudo') window.hub.mudo(i);
     if (b.dataset.acao === 'recarregar') window.hub.recarregar(i);
     if (b.dataset.acao === 'cheia') focar(foco === i ? null : i);
@@ -126,7 +129,23 @@
 
   // ---------- janelas (os jogos se escondem enquanto uma está aberta) ----------
   function abrirJanela(id) { modalAberto = true; posicionar(); $(id).hidden = false; }
-  function fecharJanelas() { $('modal').hidden = true; $('modal-sniper').hidden = true; modalAberto = false; posicionar(); }
+  function fecharJanelas() { $('modal').hidden = true; $('modal-sniper').hidden = true; $('modal-jogo').hidden = true; modalAberto = false; posicionar(); }
+
+  // ---------- "+": escolher o jogo do quadrado (os parceiros do deck; por enquanto só o PokeIdle) ----------
+  let jogoPara = null;
+  function escolherJogo(i, focarDepois) {
+    jogoPara = { i, focarDepois };
+    $('jogo-titulo').textContent = `Escolha o jogo do quadrado ${i + 1}`;
+    $('jogos').innerHTML = jogos.map((j) => `<button class="jogo-card" data-jogo="${esc(j.id)}"><b>${esc(j.nome)}</b><span>${esc(j.site)}</span></button>`).join('')
+      + '<div class="jogo-card em-breve"><b>Em breve</b><span>outros jogos parceiros</span></div>';
+    abrirJanela('modal-jogo');
+  }
+  $('jogos').addEventListener('click', (ev) => {
+    const b = ev.target.closest('[data-jogo]'); if (!b || !jogoPara) return;
+    const { i, focarDepois } = jogoPara; jogoPara = null;
+    fecharJanelas(); window.hub.adicionar(i, b.dataset.jogo); if (focarDepois) focar(i);
+  });
+  $('jogo-cancelar').onclick = fecharJanelas;
   let fecharQual = null;
   function perguntarFechar(i) {
     fecharQual = i;
@@ -163,10 +182,10 @@
     estado.forEach(pintar);
   }
   function abrirEscolhaSniper() {
-    const ativas = estado.filter((s) => s.ativo);
+    const ativas = estado.filter((s) => s.ativo && s.temSniper);
     $('sniper-contas').innerHTML = ativas.length
       ? ativas.map((s) => `<label><input type="radio" name="sniper-conta" value="${s.i}"${(sniper.conta ?? ativas[0].i) === s.i ? ' checked' : ''}> ${esc(nomeDe(s))}<span class="sub">${esc(situacao(s).txt)}</span></label>`).join('')
-      : '<p>Adicione uma conta (botão +) e faça o login antes de ligar o Sniper.</p>';
+      : '<p>Adicione uma conta de PokeIdle (botão +) e faça o login antes de ligar o Sniper.</p>';
     $('sniper-ligar').disabled = !ativas.length || !sniper.pronto;
     $('sniper-ligar').textContent = sniper.pronto ? (sniper.conta == null ? 'Ligar o Sniper' : 'Trocar de conta') : 'Baixando o Sniper…';
     abrirJanela('modal-sniper');
@@ -199,7 +218,7 @@
 
   // ---------- temas ----------
   function aplicarTema(t, salvar) {
-    if (!NOMES_TEMA[t]) t = 'lavender';
+    if (!NOMES_TEMA[t]) t = 'ametista';
     document.documentElement.dataset.tema = t;
     document.querySelectorAll('.tema').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.t === t)));
     $('tema-nome').textContent = NOMES_TEMA[t];
@@ -228,7 +247,8 @@
 
   // teste automático (npm run teste)
   window.hub.aoTeste((acao, i) => {
-    if (acao === 'adicionar') window.hub.adicionar(i);
+    if (acao === 'adicionar') window.hub.adicionar(i, 'pokeidle');
+    if (acao === 'escolher') escolherJogo(i, false);
     if (acao === 'mudo') window.hub.mudo(i);
     if (acao === 'cheia') focar(i);
     if (acao === 'esc') sairDoFoco();
@@ -239,6 +259,7 @@
 
   montar();
   window.hub.inicio().then((d) => {
+    if (Array.isArray(d.jogos) && d.jogos.length) jogos = d.jogos;
     d.contas.forEach((s) => Object.assign(estado[s.i], s));
     sniper = d.sniper; aplicarTema(d.cfg.tema, false);
     estado.forEach(pintar); pintarSniper(); posicionar();

@@ -3,18 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PokeIdle RMT Calculator</title>
+<title>IdleDeck</title>
 <meta name="description" content="Quanto vale o seu pokémon no Mercado do PokeIdle: preço sugerido pelas vendas reais, líquido da comissão e nota de mercado por espécie.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%3E%3Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%231a1030'%2F%3E%3Ctext%20x%3D'32'%20y%3D'42'%20text-anchor%3D'middle'%20font-family%3D'Arial%2Csans-serif'%20font-weight%3D'800'%20font-size%3D'34'%20fill%3D'%23fff'%3EP%3C%2Ftext%3E%3Crect%20x%3D'16'%20y%3D'49'%20width%3D'32'%20height%3D'5'%20rx%3D'2.5'%20fill%3D'%23f0359a'%2F%3E%3C%2Fsvg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20x%3D%2714%27%20y%3D%2710%27%20width%3D%2728%27%20height%3D%2740%27%20rx%3D%276%27%20transform%3D%27rotate(-16%2028%2050)%27%20fill%3D%27%233a2e4d%27%2F%3E%3Crect%20x%3D%2722%27%20y%3D%2710%27%20width%3D%2728%27%20height%3D%2740%27%20rx%3D%276%27%20transform%3D%27rotate(14%2036%2050)%27%20fill%3D%27%23b77cff%27%2F%3E%3Crect%20x%3D%2718%27%20y%3D%2712%27%20width%3D%2728%27%20height%3D%2740%27%20rx%3D%276%27%20fill%3D%27%23f36cb8%27%2F%3E%3Cpath%20d%3D%27M28%2025.5v13l10.5-6.5z%27%20fill%3D%27%23141019%27%2F%3E%3C%2Fsvg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: bancada de feira — ficha à esquerda (fixa no desktop), laudo de preço e gráfico à direita, ranking embaixo */
-/* Três temas com nome de cidade, os mesmos do PokeIdle Hub: Celadon City (verde-jade claro), Lavender Town
-   (lavanda escuro) e Mahogany Town (mogno com verde-azulado). Sem escolha salva, segue o sistema:
-   claro → Celadon, escuro → Lavender. */
+/* Três temas com nome de pedra, os mesmos do IdleDeck Hub: Jade (verde-claro), Ametista (roxo escuro) e
+   Turquesa (marrom com verde-azulado). Sem escolha salva, segue o sistema: claro → Jade, escuro → Ametista.
+   --logo-a/b/c: as três cartas da logo, que mudam com o tema. */
 :root {
+  --logo-a: #565164; --logo-b: #726c81; --logo-c: #92b395;
   --bg: #d8f5d1; --surface: #f3fcf0; --sunk: #c9ecdc; --ink: #2b2735; --muted: #565164; --line: #a9c8ab;
   --gem: #565164; --gem-soft: #e6e3ee; --coin: #8a5a00; --coin-soft: #f3ead0;
   --good: #1d7a49; --warn: #9a5d00; --bad: #b42335; color-scheme: light;
@@ -24,21 +25,25 @@
   --f-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme]) {
+  --logo-a: #f36cb8; --logo-b: #b77cff; --logo-c: #3a2e4d;
   --bg: #141019; --surface: #1d1826; --sunk: #17121f; --ink: #eee9f5; --muted: #a59cb4; --line: #342c42;
   --gem: #f36cb8; --gem-soft: #3a1830; --coin: #f2b53a; --coin-soft: #3a2c10;
   --good: #5cc77d; --warn: #f08a4b; --bad: #ff6b7d; color-scheme: dark;
 } }
-:root[data-theme="lavender"] {
+:root[data-theme="ametista"] {
+  --logo-a: #f36cb8; --logo-b: #b77cff; --logo-c: #3a2e4d;
   --bg: #141019; --surface: #1d1826; --sunk: #17121f; --ink: #eee9f5; --muted: #a59cb4; --line: #342c42;
   --gem: #f36cb8; --gem-soft: #3a1830; --coin: #f2b53a; --coin-soft: #3a2c10;
   --good: #5cc77d; --warn: #f08a4b; --bad: #ff6b7d; color-scheme: dark;
 }
-:root[data-theme="mahogany"] {
+:root[data-theme="turquesa"] {
+  --logo-a: #3fc1c4; --logo-b: #0b8185; --logo-c: #1f5f61;
   --bg: #30261c; --surface: #403831; --sunk: #2a2118; --ink: #f2ebe2; --muted: #c2b4a5; --line: #5a4d41;
   --gem: #3fc1c4; --gem-soft: #1f5f61; --coin: #f2b53a; --coin-soft: #4a3a1a;
   --good: #6fe0a8; --warn: #f0bd5a; --bad: #ff7f86; color-scheme: dark;
 }
-:root[data-theme="celadon"] {
+:root[data-theme="jade"] {
+  --logo-a: #565164; --logo-b: #726c81; --logo-c: #92b395;
   --bg: #d8f5d1; --surface: #f3fcf0; --sunk: #c9ecdc; --ink: #2b2735; --muted: #565164; --line: #a9c8ab;
   --gem: #565164; --gem-soft: #e6e3ee; --coin: #8a5a00; --coin-soft: #f3ead0;
   --good: #1d7a49; --warn: #9a5d00; --bad: #b42335; color-scheme: light;
@@ -46,9 +51,9 @@
 .temas-site { display: inline-flex; gap: 6px; align-items: center; padding: 3px 4px; border: 1px solid var(--line); border-radius: 999px; background: var(--sunk); }
 .temas-site button { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--line); padding: 0; cursor: pointer; }
 .temas-site button[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--sunk), 0 0 0 4px var(--acc); }
-.temas-site [data-t="celadon"] { background: linear-gradient(135deg, #d8f5d1 50%, #726c81 50%); }
-.temas-site [data-t="lavender"] { background: linear-gradient(135deg, #1d1826 50%, #f36cb8 50%); }
-.temas-site [data-t="mahogany"] { background: linear-gradient(135deg, #403831 50%, #0b8185 50%); }
+.temas-site [data-t="jade"] { background: linear-gradient(135deg, #d8f5d1 50%, #726c81 50%); }
+.temas-site [data-t="ametista"] { background: linear-gradient(135deg, #1d1826 50%, #f36cb8 50%); }
+.temas-site [data-t="turquesa"] { background: linear-gradient(135deg, #403831 50%, #0b8185 50%); }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--f-body); }
@@ -68,11 +73,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
 p { margin: 0; }
 
 header.top { display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: end; justify-content: space-between; border-bottom: 1px solid var(--line); padding-bottom: 16px; }
-.logo { display: inline-grid; justify-items: start; gap: 6px; margin: 0; }
-.logo-nome { font: 800 2.1rem/1 "Plus Jakarta Sans", var(--f-body); letter-spacing: -.02em; color: var(--ink); }
-.logo-bola { display: inline-block; width: .6em; height: .6em; margin: 0 .03em 0 .02em; vertical-align: baseline; overflow: visible; }
-.logo-barra { width: 72%; height: 4px; border-radius: 2px; background: var(--gem); }
-.logo-sub { font: 500 .95rem/1.2 var(--f-body); letter-spacing: .02em; color: var(--muted); }
+.logo { display: inline-flex; align-items: center; gap: 12px; margin: 0; }
+.logo-deck { width: 56px; height: 56px; flex: none; }
+.logo-txt { display: grid; gap: 4px; }
+.logo-nome { font: 500 2.1rem/1 var(--f-display); letter-spacing: .005em; color: var(--ink); }
+.logo-nome b { font-weight: 700; color: var(--logo-a); }
+.logo-sub { font: 500 .9rem/1.2 var(--f-body); letter-spacing: .04em; color: var(--muted); }
 header.top p { margin-top: 12px; color: var(--muted); max-width: 62ch; }
 .controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
 .seg { display: inline-flex; flex-wrap: wrap; background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 3px; gap: 3px; }
@@ -319,10 +325,9 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
 <div class="wrap">
   <header class="top">
     <div>
-      <h1 class="logo" aria-label="PokeIdle RMT Calculator">
-        <span class="logo-nome">P<svg class="logo-bola" viewBox="0 0 100 100" aria-hidden="true"><path d="M6 50a44 44 0 0 1 88 0z" fill="#e3350d"/><path d="M6 50a44 44 0 0 0 88 0z" fill="#fff"/><circle cx="50" cy="50" r="44" fill="none" stroke="#1d1726" stroke-width="8"/><path d="M6 50h88" stroke="#1d1726" stroke-width="8"/><circle cx="50" cy="50" r="15" fill="#fff" stroke="#1d1726" stroke-width="8"/></svg>keIdle</span>
-        <span class="logo-barra" aria-hidden="true"></span>
-        <span class="logo-sub">RMT Calculator</span>
+      <h1 class="logo" aria-label="IdleDeck, by Leão">
+        <svg class="logo-deck" viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="10" width="28" height="40" rx="6" transform="rotate(-16 28 50)" fill="var(--logo-c)"/><rect x="22" y="10" width="28" height="40" rx="6" transform="rotate(14 36 50)" fill="var(--logo-b)"/><rect x="18" y="12" width="28" height="40" rx="6" fill="var(--logo-a)"/><path d="M28 25.5v13l10.5-6.5z" fill="var(--bg)"/><circle cx="32" cy="46.5" r="1.6" fill="var(--bg)"/><circle cx="26.5" cy="46.5" r="1.1" fill="var(--bg)" opacity=".6"/><circle cx="37.5" cy="46.5" r="1.1" fill="var(--bg)" opacity=".6"/></svg>
+        <span class="logo-txt"><span class="logo-nome">Idle<b>Deck</b></span><span class="logo-sub">by Leão</span></span>
       </h1>
       <p>Quanto vale o seu pokémon: cole a ficha e veja o preço pelas vendas reais do Mercado, já com a comissão descontada.</p>
     </div>
@@ -339,11 +344,11 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
         <button id="m-coins" aria-pressed="false"><span class="dot coin"></span>Coins</button>
       </div>
       <a class="tema" id="btn-extensao" href="#extensao">🎯 Extensão Sniper</a>
-      <a class="tema" id="btn-hub" href="#hub">🖥️ PokeIdle Hub</a>
+      <a class="tema" id="btn-hub" href="#hub">🖥️ IdleDeck Hub</a>
       <div class="temas-site" role="group" aria-label="Tema do site">
-        <button type="button" data-t="celadon" title="Tema Celadon City (claro)" aria-label="Tema Celadon City"></button>
-        <button type="button" data-t="lavender" title="Tema Lavender Town (escuro)" aria-label="Tema Lavender Town"></button>
-        <button type="button" data-t="mahogany" title="Tema Mahogany Town (escuro)" aria-label="Tema Mahogany Town"></button>
+        <button type="button" data-t="jade" title="Tema Jade (claro)" aria-label="Tema Jade"></button>
+        <button type="button" data-t="ametista" title="Tema Ametista (escuro)" aria-label="Tema Ametista"></button>
+        <button type="button" data-t="turquesa" title="Tema Turquesa (escuro)" aria-label="Tema Turquesa"></button>
       </div>
       <div class="rate" id="rate-box">1 Gema ≈ <b id="rate">3.000.000</b> Coins</div>
     </div>
@@ -519,7 +524,7 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
           <div class="plugin plugin-pagina" id="extensao-sniper">
             <div class="head-row"><div><span class="plugin-tag">Extensão opcional</span><h2 style="margin-top:6px">🎯 Sniper ao vivo</h2></div></div>
             <div class="plugin-corpo">
-              <p class="small">Pechinchas no Mercado somem em minutos, então o sniper do RMT Calculator roda <b>dentro da aba do jogo</b>, no seu navegador: um script que olha o Mercado de tempos em tempos e mostra as pechinchas num painel no canto da tela, com o lucro de revenda já sem a comissão. Usar é opcional: instale só se quiser.</p>
+              <p class="small">Pechinchas no Mercado somem em minutos, então o sniper do IdleDeck roda <b>dentro da aba do jogo</b>, no seu navegador: um script que olha o Mercado de tempos em tempos e mostra as pechinchas num painel no canto da tela, com o lucro de revenda já sem a comissão. Usar é opcional: instale só se quiser.</p>
               <div class="plugin-col">
                 <div><span class="lbl">O que ele faz</span>
                   <ul class="small">
@@ -532,7 +537,7 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
                   <ul class="small">
                     <li>Ele usa a <b>sua sessão</b> do jogo: só funciona com o jogo aberto no navegador e não pausa nenhuma conta.</li>
                     <li>Os Termos do PokeIdle permitem automações no Mercado (wiki, "Automação de fora do jogo"), e o jogo limita mensagens por segundo; o script consulta devagar, como uma pessoa navegando.</li>
-                    <li>É um script de terceiros, feito para o RMT Calculator, sem ligação com o PokeIdle. O código é aberto: dá para ler antes de instalar.</li>
+                    <li>É um script de terceiros, feito para o IdleDeck, sem ligação com o PokeIdle. O código é aberto: dá para ler antes de instalar.</li>
                     <li>A referência é simples (não olha nota nem IV): antes de comprar caro, confira o laudo no site.</li>
                   </ul></div>
               </div>
@@ -541,7 +546,7 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
                 <li>Instale a extensão <b>Tampermonkey</b> na loja do Chrome ou do Edge.</li>
                 <li>Libere scripts de usuário: abra <code>chrome://extensions</code> (no Edge, <code>edge://extensions</code>), ligue o <b>Modo de desenvolvedor</b> e, nos <b>Detalhes</b> do Tampermonkey, ligue <b>Permitir scripts de usuário</b> se aparecer.</li>
                 <li>Clique em <a class="btn" href="sniper-ao-vivo.user.js" target="_blank" rel="noopener">Instalar o Sniper ao vivo</a>. O Tampermonkey abre uma página com o código: clique em <b>Instalar</b>.</li>
-                <li>Recarregue a aba do jogo (pokeidle.io). O painel "🎯 Sniper ao vivo" aparece no canto de baixo, à direita. Na primeira vez, o Tampermonkey pode pedir permissão para o script acessar o RMT Calculator: escolha <b>Sempre permitir este domínio</b>.</li>
+                <li>Recarregue a aba do jogo (pokeidle.io). O painel "🎯 Sniper ao vivo" aparece no canto de baixo, à direita. Na primeira vez, o Tampermonkey pode pedir permissão para o script acessar o IdleDeck: escolha <b>Sempre permitir este domínio</b>.</li>
                 <li>Escolha o desconto mínimo e o intervalo no painel. Para desligar, use <b>Pausar</b> no painel ou desative o script no Tampermonkey.</li>
               </ol>
               <p class="small muted">Atualizações chegam sozinhas pelo Tampermonkey. Se você joga com duas contas em navegadores diferentes, instale só no navegador da conta que vai comprar.</p>
@@ -553,8 +558,8 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
       <div class="vista" data-vista="hub" hidden>
         <section class="panel">
           <div class="plugin plugin-pagina" id="pokeidle-hub">
-            <div class="head-row"><div><span class="plugin-tag">Programa para Windows · grátis</span><h2 style="margin-top:6px">🖥️ PokeIdle Hub</h2></div>
-              <a class="btn" id="hub-baixar" href="https://github.com/Leao25/PokeIdleRMTCalculator/releases/latest/download/PokeIdleHub.exe" rel="noopener">⬇ Baixar o PokeIdle Hub</a></div>
+            <div class="head-row"><div><span class="plugin-tag">Programa para Windows · grátis</span><h2 style="margin-top:6px">🖥️ IdleDeck Hub</h2></div>
+              <a class="btn" id="hub-baixar" href="https://github.com/Leao25/PokeIdleRMTCalculator/releases/latest/download/IdleDeck.exe" rel="noopener">⬇ Baixar o IdleDeck Hub</a></div>
             <div class="plugin-corpo">
               <p class="small">Suas contas do PokeIdle <b>numa janela só</b>, lado a lado numa grade 2×2 ou uma em tela cheia. Cada quadrado é um navegador separado, com o seu próprio login: dá para jogar várias contas sem abrir vários navegadores nem abas anônimas. <span id="hub-versao" class="muted"></span></p>
               <div class="plugin-col">
@@ -565,7 +570,7 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
                     <li>Em cada quadrado: <b>mutar</b>, <b>recarregar</b>, <b>tela cheia</b> e fechar (mantendo ou apagando o login).</li>
                     <li>As contas <b>não "dormem"</b> quando estão fora de foco ou minimizadas, como acontece nas abas escondidas do navegador.</li>
                     <li>O <b>🎯 Sniper ao vivo</b> já vem dentro: escolha a conta e o painel aparece na barra do hub, sem Tampermonkey.</li>
-                    <li>Três temas: Lavender Town, Mahogany Town e Celadon City (os mesmos deste site).</li>
+                    <li>Três temas: Ametista, Turquesa e Jade (os mesmos deste site).</li>
                   </ul></div>
                 <div><span class="lbl">Antes de decidir</span>
                   <ul class="small">
@@ -577,7 +582,7 @@ td.bom, .bom { color: var(--good); } td.ruim, .ruim { color: var(--bad); }
               </div>
               <span class="lbl">Como instalar</span>
               <ol class="small">
-                <li>Clique em <b>Baixar o PokeIdle Hub</b> (≈ 75 MB). Não precisa instalar: o arquivo já é o programa; guarde onde quiser e crie um atalho.</li>
+                <li>Clique em <b>Baixar o IdleDeck Hub</b> (≈ 75 MB). Não precisa instalar: o arquivo já é o programa; guarde onde quiser e crie um atalho.</li>
                 <li>Na primeira vez, o Windows pode mostrar "O Windows protegeu o computador" (o programa não tem assinatura paga). Clique em <b>Mais informações</b> e depois em <b>Executar assim mesmo</b>.</li>
                 <li>Aperte o <b>+</b>, faça o login e repita nas outras contas. Para o Sniper, clique em <b>🎯 Sniper</b> na barra e escolha a conta.</li>
               </ol>
@@ -2159,14 +2164,14 @@ new MutationObserver((muts) => {
   }
 }).observe(document.body, { childList: true, subtree: true });
 
-// a versão atual do PokeIdle Hub (a mesma que o programa consulta para avisar de versão nova)
+// a versão atual do IdleDeck Hub (a mesma que o programa consulta para avisar de versão nova)
 fetch("hub.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).then((h) => { if (h?.versao) $("hub-versao").textContent = `Versão ${h.versao}.`; }).catch(() => {});
 
-// ---------- temas: Celadon City, Lavender Town, Mahogany Town (os mesmos do PokeIdle Hub) ----------
-// Sem escolha salva, segue o sistema: claro → Celadon, escuro → Lavender. Quem tinha "light"/"dark" salvo
-// (o botão antigo de dia e noite) cai no equivalente.
-const TEMAS = ["celadon", "lavender", "mahogany"];
-const temaDoSistema = () => (matchMedia("(prefers-color-scheme: dark)").matches ? "lavender" : "celadon");
+// ---------- temas: Jade, Ametista, Turquesa (os mesmos do IdleDeck Hub) ----------
+// Sem escolha salva, segue o sistema: claro → Jade, escuro → Ametista. Escolhas antigas caem no equivalente:
+// light/celadon → jade, dark/lavender → ametista, mahogany → turquesa.
+const TEMAS = ["jade", "ametista", "turquesa"];
+const temaDoSistema = () => (matchMedia("(prefers-color-scheme: dark)").matches ? "ametista" : "jade");
 function aplicarTema(t) {
   if (TEMAS.includes(t)) document.documentElement.dataset.theme = t;
   else delete document.documentElement.dataset.theme;
@@ -2175,8 +2180,7 @@ function aplicarTema(t) {
 }
 let temaSalvo = null;
 try { temaSalvo = localStorage.getItem("rtm-tema"); } catch (e) {}
-if (temaSalvo === "light") temaSalvo = "celadon";
-if (temaSalvo === "dark") temaSalvo = "lavender";
+temaSalvo = { light: "jade", celadon: "jade", dark: "ametista", lavender: "ametista", mahogany: "turquesa" }[temaSalvo] || temaSalvo;
 aplicarTema(temaSalvo);
 document.querySelectorAll(".temas-site [data-t]").forEach((b) => { b.onclick = () => { try { localStorage.setItem("rtm-tema", b.dataset.t); } catch (e) {} aplicarTema(b.dataset.t); }; });
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { if (!document.documentElement.dataset.theme) aplicarTema(null); });
